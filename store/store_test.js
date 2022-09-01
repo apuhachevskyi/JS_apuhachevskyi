@@ -1,6 +1,9 @@
+const auth = require("../pages/auth");
+
 let user = {
     firstName: 'Andrii',
     lastName: 'Puhachevskyi',
+    email: '31082022181223@test.com',
     password: '12345',
     firstname: 'Andrii',
     lastname: 'Puhachevskyi',
@@ -13,13 +16,29 @@ let user = {
 };
 
 Feature('store');
-Scenario('test something', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
-I.openStore();
-homePage.clickSignIn();
-authPage.fillEmail(Date.now() + '@test.com');
-authPage.clickCreateAccount();
-createAccountPage.fillNewAccountFields(user);
-createAccountPage.clickRegister();
-myAccountPage.verifyPage();
-//I.see('My account');
-}).tag('auth');
+
+Before(({ I }) => {
+    I.openStore();
+});
+
+xScenario('create account', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
+    homePage.clickSignIn();
+    authPage.fillRegistrationEmail(Date.now() + '@test.com');
+    authPage.clickCreateAccount();
+    createAccountPage.fillNewAccountFields(user);
+    createAccountPage.clickRegister();
+    myAccountPage.verifyPage();
+}).tag('reg');
+
+Scenario('buy product', async ({ I, homePage, authPage, myAccountPage, productPage, shoppingCartPage }) => {
+    homePage.clickSignIn();
+    authPage.login(user.email, user.password);
+    myAccountPage.verifyPage();
+    I.openProduct();
+    let productPrice = await productPage.getProductPrice();
+    productPage.clickAddToCart();
+    shoppingCartPage.processShopping();
+    let productCartPrice = await shoppingCartPage.getProductPrice();
+    productCartPrice = productCartPrice.replace(/\s+/g, '');
+    I.assertEqual(productPrice, productCartPrice, 'Prices are not in match' );
+}).tag('buy');

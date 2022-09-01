@@ -4,10 +4,15 @@ module.exports = function() {
   return actor({
     openStore(){
       this.amOnPage('http://automationpractice.com/index.php');
-    }
+    },
 
-    // Define custom steps here, use 'this' to access default methods of I.
-    // It is recommended to place a general 'login' function here.
+    openProduct(){
+      this.amOnPage('http://automationpractice.com/index.php?id_product=1&controller=product');
+    },
+
+    openCart(){
+      this.amOnPage('http://automationpractice.com/index.php?controller=order');
+    }
 
   });
 }

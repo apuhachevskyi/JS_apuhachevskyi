@@ -17,8 +17,12 @@ exports.config = {
       browser: 'chromium',
       timeout: 20000,
       waitForTimeout: 10000,
-      waitForNavigation: 'networkidle'
-    }
+      waitForNavigation: 'networkidle',
+      windowSize: '1880x920',
+    },
+    ChaiWrapper: {
+      require: 'codeceptjs-chai',
+    },
   },
   include: {
     I: './steps_file.js',
@@ -26,6 +30,8 @@ exports.config = {
     authPage: './pages/auth.js',
     createAccountPage: './pages/createAccount.js',
     myAccountPage: './pages/myAccount.js',
+    productPage: './pages/product.js',
+    shoppingCartPage: './pages/shoppingCart.js',
   },
   name: 'JS_apuhachevskyi'
 }

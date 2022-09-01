@@ -14,7 +14,7 @@ module.exports = {
   aliasInput: { css: '#alias' },
   registerButton: { css: '#submitAccount' },
 
-  fillNewAccountFields(user){
+  fillNewAccountFields(user) {
     I.waitForVisible(this.firstNameInput)
     I.fillField(this.firstNameInput, user.firstName);
     I.fillField(this.lastNameInput, user.lastName);
@@ -30,9 +30,7 @@ module.exports = {
     I.fillField(this.aliasInput, user.alias);
   },
 
-  clickRegister(){
+  clickRegister() {
     I.click(this.registerButton);
   }
-
-  // insert your locators and methods here
 }

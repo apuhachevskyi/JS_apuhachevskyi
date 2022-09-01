@@ -2,10 +2,10 @@ const { I } = inject();
 
 module.exports = {
   myAccountId: { css: '#my-account' },
+  verificationText: 'My account',
 
-  verifyPage(){
+  verifyPage() {
     I.waitForVisible(this.myAccountId)
-    I.see('My account');
+    I.see(this.verificationText);
   }
-  // insert your locators and methods here
 }
