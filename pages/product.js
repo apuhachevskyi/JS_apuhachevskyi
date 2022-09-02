@@ -9,7 +9,7 @@ module.exports = {
     return await I.grabTextFrom(this.productPrice);
   },
 
-  clickAddToCart(){
+  clickAddProduct(){
     I.click(this.addToCart);
     I.click(this.proceedToCheckout);
   }

@@ -1,9 +1,6 @@
-const auth = require("../pages/auth");
-
 let user = {
     firstName: 'Andrii',
     lastName: 'Puhachevskyi',
-    email: '31082022181223@test.com',
     password: '12345',
     firstname: 'Andrii',
     lastname: 'Puhachevskyi',
@@ -15,6 +12,10 @@ let user = {
     alias: 'test_user',
 };
 
+let credentials = {
+    email: '31082022181223@test.com',
+    password: '12345',
+}
 Feature('store');
 
 Before(({ I }) => {
@@ -23,7 +24,8 @@ Before(({ I }) => {
 
 xScenario('create account', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
     homePage.clickSignIn();
-    authPage.fillRegistrationEmail(Date.now() + '@test.com');
+//    authPage.fillRegistrationEmail(Date.now() + '@test.com');
+    authPage.fillRegistrationEmail(I.getRandomEmail());
     authPage.clickCreateAccount();
     createAccountPage.fillNewAccountFields(user);
     createAccountPage.clickRegister();
@@ -32,13 +34,16 @@ xScenario('create account', ({ I, homePage, authPage, createAccountPage, myAccou
 
 Scenario('buy product', async ({ I, homePage, authPage, myAccountPage, productPage, shoppingCartPage }) => {
     homePage.clickSignIn();
-    authPage.login(user.email, user.password);
+    authPage.login(credentials.email, credentials.password);
     myAccountPage.verifyPage();
-    I.openProduct();
+    I.amOnPage('http://automationpractice.com/index.php?id_product=1&controller=product');
     let productPrice = await productPage.getProductPrice();
-    productPage.clickAddToCart();
+    productPage.clickAddProduct();
     shoppingCartPage.processShopping();
     let productCartPrice = await shoppingCartPage.getProductPrice();
     productCartPrice = productCartPrice.replace(/\s+/g, '');
     I.assertEqual(productPrice, productCartPrice, 'Prices are not in match' );
+    shoppingCartPage.confirmShopping();
+    let orderCode = await shoppingCartPage.getOrderCode();
+    console.log(orderCode);
 }).tag('buy');

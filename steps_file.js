@@ -6,11 +6,7 @@ module.exports = function() {
       this.amOnPage('http://automationpractice.com/index.php');
     },
 
-    openProduct(){
-      this.amOnPage('http://automationpractice.com/index.php?id_product=1&controller=product');
-    },
-
-    openCart(){
+      openCart(){
       this.amOnPage('http://automationpractice.com/index.php?controller=order');
     }
 

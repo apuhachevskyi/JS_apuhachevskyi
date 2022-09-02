@@ -8,7 +8,7 @@ setCommonPlugins();
 
 /** @type {CodeceptJS.MainConfig} */
 exports.config = {
-  tests: './store/store_test.js',
+  tests: './store/*_test.js',
   output: './output',
   helpers: {
     Playwright: {
@@ -22,6 +22,9 @@ exports.config = {
     },
     ChaiWrapper: {
       require: 'codeceptjs-chai',
+    },
+    EmailGenerator: {
+      require: './helpers/emailGenerator.js',
     },
   },
   include: {
