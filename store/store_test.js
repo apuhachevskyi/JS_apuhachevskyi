@@ -38,6 +38,7 @@ Scenario('buy product', async ({ I, homePage, authPage, myAccountPage, productPa
     I.amOnPage('http://automationpractice.com/index.php?id_product=1&controller=product');
     let productPrice = await productPage.getProductPrice();
     productPage.addProductToCart();
+    productPage.proceedToCheckout();
     shoppingCartPage.processShopping();
     let productShipping = await shoppingCartPage.getProductShipping();
     let productTax = await shoppingCartPage.getProductTax();
