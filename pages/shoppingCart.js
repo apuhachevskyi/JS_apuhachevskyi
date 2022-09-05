@@ -13,7 +13,9 @@ module.exports = {
   proceedToCheckout: { xpath: '//a[@title="Proceed to checkout"]' },
   submitAddressButton: { xpath: '//button[@name="processAddress"]' },
   submitShippingButton: { xpath: '//button[@name="processCarrier"]' },
-  productPrice: { css: '#product_price_1_1_740815' },
+  productPrice: { css: '#total_price' },
+  productShipping: { css: '#total_shipping' },
+  productTax: { css: '#total_tax' },
   orderInfo: 'div.box',
   wireTransfer: 'a.bankwire',
   confirmOrder: { xpath: '//button[@class="button btn btn-default button-medium"]' },
@@ -41,7 +43,15 @@ module.exports = {
   },
 
   async getProductPrice() {
-    return await I.grabTextFrom(this.productPrice);
+    return +(await I.grabTextFrom(this.productPrice)).slice(1);
+  },
+
+  async getProductShipping() {
+    return +(await I.grabTextFrom(this.productShipping)).slice(1);
+  },
+
+  async getProductTax() {
+    return +(await I.grabTextFrom(this.productTax)).slice(1);
   },
 
   async getOrderCode() {

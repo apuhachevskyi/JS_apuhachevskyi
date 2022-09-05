@@ -22,9 +22,8 @@ Before(({ I }) => {
     I.openStore();
 });
 
-xScenario('create account', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
+Scenario('create account', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
     homePage.clickSignIn();
-//    authPage.fillRegistrationEmail(Date.now() + '@test.com');
     authPage.fillRegistrationEmail(I.getRandomEmail());
     authPage.clickCreateAccount();
     createAccountPage.fillNewAccountFields(user);
@@ -40,8 +39,10 @@ Scenario('buy product', async ({ I, homePage, authPage, myAccountPage, productPa
     let productPrice = await productPage.getProductPrice();
     productPage.clickAddProduct();
     shoppingCartPage.processShopping();
+    let productShipping = await shoppingCartPage.getProductShipping();
+    let productTax = await shoppingCartPage.getProductTax();
     let productCartPrice = await shoppingCartPage.getProductPrice();
-    productCartPrice = productCartPrice.replace(/\s+/g, '');
+    productPrice = productPrice + productShipping + productTax;
     I.assertEqual(productPrice, productCartPrice, 'Prices are not in match' );
     shoppingCartPage.confirmShopping();
     let orderCode = await shoppingCartPage.getOrderCode();

@@ -6,7 +6,7 @@ module.exports = {
   proceedToCheckout: { xpath: '//a[@title="Proceed to checkout"]' },
 
   async getProductPrice() {
-    return await I.grabTextFrom(this.productPrice);
+    return +(await I.grabTextFrom(this.productPrice)).slice(1);
   },
 
   clickAddProduct(){
