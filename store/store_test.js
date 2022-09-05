@@ -12,14 +12,40 @@ let user = {
     alias: 'test_user',
 };
 
+let credentials = {
+    email: '31082022181223@test.com',
+    password: '12345',
+}
 Feature('store');
-Scenario('test something', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
-I.openStore();
-homePage.clickSignIn();
-authPage.fillEmail(Date.now() + '@test.com');
-authPage.clickCreateAccount();
-createAccountPage.fillNewAccountFields(user);
-createAccountPage.clickRegister();
-myAccountPage.verifyPage();
-//I.see('My account');
-}).tag('auth');
+
+Before(({ I }) => {
+    I.openStore();
+});
+
+Scenario('create account', ({ I, homePage, authPage, createAccountPage, myAccountPage }) => {
+    homePage.clickSignIn();
+    authPage.fillRegistrationEmail(I.getRandomEmail());
+    authPage.clickCreateAccount();
+    createAccountPage.fillNewAccountFields(user);
+    createAccountPage.clickRegister();
+    myAccountPage.verifyPage();
+}).tag('reg');
+
+Scenario('buy product', async ({ I, homePage, authPage, myAccountPage, productPage, shoppingCartPage }) => {
+    homePage.clickSignIn();
+    authPage.login(credentials.email, credentials.password);
+    myAccountPage.verifyPage();
+    I.amOnPage('http://automationpractice.com/index.php?id_product=1&controller=product');
+    let productPrice = await productPage.getProductPrice();
+    productPage.addProductToCart();
+    productPage.proceedToCheckout();
+    shoppingCartPage.processShopping();
+    let productShipping = await shoppingCartPage.getProductShipping();
+    let productTax = await shoppingCartPage.getProductTax();
+    let productCartPrice = await shoppingCartPage.getProductPrice();
+    productPrice = productPrice + productShipping + productTax;
+    I.assertEqual(productPrice, productCartPrice, 'Prices are not in match' );
+    shoppingCartPage.confirmShopping();
+    let orderCode = await shoppingCartPage.getOrderCode();
+    console.log(orderCode);
+}).tag('buy');
